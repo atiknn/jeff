@@ -5,3 +5,5 @@
 .terraform/*
 
 .git
+
+.terraform.lock.hcl
