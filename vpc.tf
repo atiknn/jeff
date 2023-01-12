@@ -54,7 +54,7 @@ resource "aws_internet_gateway" "main_internetgateway" {
 }
 
 resource "aws_nat_gateway" "aws_nat_gateway_1" {
-  allocation_id = aws_eip.aws_eip.id
+  allocation_id = aws_eip.aws_eip_1.id
   subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
@@ -67,7 +67,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_1" {
 }
 
 resource "aws_nat_gateway" "aws_nat_gateway_2" {
-  allocation_id = aws_eip.aws_eip.id
+  allocation_id = aws_eip.aws_eip_2.id
   subnet_id     = aws_subnet.public_subnet_2.id
 
   tags = {
@@ -123,6 +123,10 @@ resource "aws_route_table_association" "private_subnet_2_to_public_route_table" 
   route_table_id = aws_route_table.private_route_table_2.id
 }
 
-resource "aws_eip" "aws_eip" {
+resource "aws_eip" "aws_eip_1" {
+  vpc = true
+}
+
+resource "aws_eip" "aws_eip_2" {
   vpc = true
 }
