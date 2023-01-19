@@ -5,43 +5,30 @@ resource "aws_vpc" "main_vpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "main_vpc"
+    Name = "${var.env_code}-vpc"
   }
 }
 
-resource "aws_subnet" "public_subnet_1" {
+resource "aws_subnet" "public_subnet" {
+  public_cidr_count = length(var.public_cidr)
+
   vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = "10.0.0.0/18"
+  cidr_block = var.public_cidr[public_cidr_count.index]
 
   tags = {
-    Name = "public_subnet_1"
+    Name = "${var.env_code}-public_subnet_${public_cidr_count.index}"
   }
 }
 
-resource "aws_subnet" "public_subnet_2" {
+
+resource "aws_subnet" "private_subnet" {
+  private_cidr_count = length(var.private_cidr)
+
   vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = "10.0.64.0/18"
+  cidr_block = var.private_cidr[private_cidr_count.index]
 
   tags = {
-    Name = "public_subnet_2"
-  }
-}
-
-resource "aws_subnet" "private_subnet_1" {
-  vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = "10.0.128.0/18"
-
-  tags = {
-    Name = "private_subnet_1"
-  }
-}
-
-resource "aws_subnet" "private_subnet_2" {
-  vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = "10.0.192.0/18"
-
-  tags = {
-    Name = "private_subnet_2"
+    Name = "${var.env_code}-private_subnet_${private_cidr_count.index}"
   }
 }
 
@@ -49,7 +36,7 @@ resource "aws_internet_gateway" "main_internetgateway" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = "main_internetgateway"
+    Name = "${var.env_code}-main_internetgateway"
   }
 }
 
@@ -58,7 +45,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_1" {
   subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
-    Name = "aws_nat_gateway_1"
+    Name = "${var.env_code}-aws_nat_gateway_1"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -71,7 +58,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_2" {
   subnet_id     = aws_subnet.public_subnet_2.id
 
   tags = {
-    Name = "aws_nat_gateway_2"
+    Name = "${var.env_code}-aws_nat_gateway_2"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -82,7 +69,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_2" {
 resource "aws_route_table" "public_route_table" { # Creating RT for Public Subnet
   vpc_id = aws_vpc.main_vpc.id
   route {
-    cidr_block = "0.0.0.0/0" # Traffic from Public Subnet reaches Internet via Internet Gateway
+    cidr_block = var.internet_cidr # Traffic from Public Subnet reaches Internet via Internet Gateway
     gateway_id = aws_internet_gateway.main_internetgateway.id
   }
 }
@@ -90,7 +77,7 @@ resource "aws_route_table" "public_route_table" { # Creating RT for Public Subne
 resource "aws_route_table" "private_route_table_1" { # Creating RT for Private Subnet
   vpc_id = aws_vpc.main_vpc.id
   route {
-    cidr_block     = "0.0.0.0/0" # Traffic from Private Subnet reaches Internet via NAT Gateway
+    cidr_block     = var.internet_cidr # Traffic from Private Subnet reaches Internet via NAT Gateway
     nat_gateway_id = aws_nat_gateway.aws_nat_gateway_1.id
   }
 }
@@ -98,7 +85,7 @@ resource "aws_route_table" "private_route_table_1" { # Creating RT for Private S
 resource "aws_route_table" "private_route_table_2" { # Creating RT for Private Subnet
   vpc_id = aws_vpc.main_vpc.id
   route {
-    cidr_block     = "0.0.0.0/0" # Traffic from Private Subnet reaches Internet via NAT Gateway
+    cidr_block     = var.internet_cidr # Traffic from Private Subnet reaches Internet via NAT Gateway
     nat_gateway_id = aws_nat_gateway.aws_nat_gateway_2.id
   }
 }
