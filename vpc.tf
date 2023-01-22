@@ -86,7 +86,7 @@ resource "aws_route_table" "public_route_table" { # Creating RT for Public Subne
     gateway_id = aws_internet_gateway.main_internetgateway.id
   }
 
-   tags = {
+  tags = {
     Name = "${var.environment_vars}_public_route_table"
   }
 }

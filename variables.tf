@@ -1,3 +1,3 @@
-variable environment_vars {
-    type = string
+variable "environment_vars" {
+  type = string
 }
