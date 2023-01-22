@@ -5,7 +5,7 @@ resource "aws_vpc" "main_vpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "main_vpc"
+    Name = "${var.environment_vars}_main_vpc"
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_subnet" "public_subnet_1" {
   cidr_block = "10.0.0.0/18"
 
   tags = {
-    Name = "public_subnet_1"
+    Name = "${var.environment_vars}_public_subnet_1"
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "public_subnet_2" {
   cidr_block = "10.0.64.0/18"
 
   tags = {
-    Name = "public_subnet_2"
+    Name = "${var.environment_vars}_public_subnet_2"
   }
 }
 
@@ -32,7 +32,7 @@ resource "aws_subnet" "private_subnet_1" {
   cidr_block = "10.0.128.0/18"
 
   tags = {
-    Name = "private_subnet_1"
+    Name = "${var.environment_vars}_private_subnet_1"
   }
 }
 
@@ -41,7 +41,7 @@ resource "aws_subnet" "private_subnet_2" {
   cidr_block = "10.0.192.0/18"
 
   tags = {
-    Name = "private_subnet_2"
+    Name = "${var.environment_vars}_private_subnet_2"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_internet_gateway" "main_internetgateway" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = "main_internetgateway"
+    Name = "${var.environment_vars}_main_internetgateway"
   }
 }
 
@@ -58,7 +58,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_1" {
   subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
-    Name = "aws_nat_gateway_1"
+    Name = "${var.environment_vars}_aws_nat_gateway_1"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -71,7 +71,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_2" {
   subnet_id     = aws_subnet.public_subnet_2.id
 
   tags = {
-    Name = "aws_nat_gateway_2"
+    Name = "${var.environment_vars}_aws_nat_gateway_2"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -85,6 +85,10 @@ resource "aws_route_table" "public_route_table" { # Creating RT for Public Subne
     cidr_block = "0.0.0.0/0" # Traffic from Public Subnet reaches Internet via Internet Gateway
     gateway_id = aws_internet_gateway.main_internetgateway.id
   }
+
+   tags = {
+    Name = "${var.environment_vars}_public_route_table"
+  }
 }
 
 resource "aws_route_table" "private_route_table_1" { # Creating RT for Private Subnet
@@ -93,6 +97,10 @@ resource "aws_route_table" "private_route_table_1" { # Creating RT for Private S
     cidr_block     = "0.0.0.0/0" # Traffic from Private Subnet reaches Internet via NAT Gateway
     nat_gateway_id = aws_nat_gateway.aws_nat_gateway_1.id
   }
+
+  tags = {
+    Name = "${var.environment_vars}_private_route_table_1"
+  }
 }
 
 resource "aws_route_table" "private_route_table_2" { # Creating RT for Private Subnet
@@ -100,6 +108,10 @@ resource "aws_route_table" "private_route_table_2" { # Creating RT for Private S
   route {
     cidr_block     = "0.0.0.0/0" # Traffic from Private Subnet reaches Internet via NAT Gateway
     nat_gateway_id = aws_nat_gateway.aws_nat_gateway_2.id
+  }
+
+  tags = {
+    Name = "${var.environment_vars}_private_route_table_2"
   }
 }
 
@@ -125,8 +137,16 @@ resource "aws_route_table_association" "private_subnet_2_to_public_route_table" 
 
 resource "aws_eip" "aws_eip_1" {
   vpc = true
+
+  tags = {
+    Name = "${var.environment_vars}_aws_eip_1"
+  }
 }
 
 resource "aws_eip" "aws_eip_2" {
   vpc = true
+
+  tags = {
+    Name = "${var.environment_vars}_aws_eip_2"
+  }
 }
