@@ -1,8 +1,7 @@
 locals {
   vpc_cidr            = "10.0.0.0/16"
   public_subnet_cidr  = ["10.0.0.0/18", "10.0.64.0/18"]
-  private_subnet_cidr = ["10.0.128.0/18", "10.0.192.0/18"]
-  internet_cidr       = "0.0.0.0/0"
+  private_subnet_cidr = ["10.0.128.0/18", "10.0.192.0/18"]  
 }
 # Configure the AWS Provider 
 
@@ -88,7 +87,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_2" {
 resource "aws_route_table" "public_route_table" { # Creating RT for Public Subnet
   vpc_id = aws_vpc.main_vpc.id
   route {
-    cidr_block = local.internet_cidr # Traffic from Public Subnet reaches Internet via Internet Gateway
+    cidr_block = "0.0.0.0/0" # Traffic from Public Subnet reaches Internet via Internet Gateway
     gateway_id = aws_internet_gateway.main_internetgateway.id
   }
 
@@ -100,7 +99,7 @@ resource "aws_route_table" "public_route_table" { # Creating RT for Public Subne
 resource "aws_route_table" "private_route_table_1" { # Creating RT for Private Subnet
   vpc_id = aws_vpc.main_vpc.id
   route {
-    cidr_block     = local.internet_cidr # Traffic from Private Subnet reaches Internet via NAT Gateway
+    cidr_block     = "0.0.0.0/0" # Traffic from Private Subnet reaches Internet via NAT Gateway
     nat_gateway_id = aws_nat_gateway.aws_nat_gateway_1.id
   }
 
@@ -112,7 +111,7 @@ resource "aws_route_table" "private_route_table_1" { # Creating RT for Private S
 resource "aws_route_table" "private_route_table_2" { # Creating RT for Private Subnet
   vpc_id = aws_vpc.main_vpc.id
   route {
-    cidr_block     = local.internet_cidr # Traffic from Private Subnet reaches Internet via NAT Gateway
+    cidr_block     = "0.0.0.0/0" # Traffic from Private Subnet reaches Internet via NAT Gateway
     nat_gateway_id = aws_nat_gateway.aws_nat_gateway_2.id
   }
 
