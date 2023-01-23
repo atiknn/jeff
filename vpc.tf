@@ -5,7 +5,7 @@ resource "aws_vpc" "main_vpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "${var.environment_vars}_main_vpc"
+    Name = "${var.environment_code}_main_vpc"
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_subnet" "public_subnet_1" {
   cidr_block = "10.0.0.0/18"
 
   tags = {
-    Name = "${var.environment_vars}_public_subnet_1"
+    Name = "${var.environment_code}_public_subnet_1"
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "public_subnet_2" {
   cidr_block = "10.0.64.0/18"
 
   tags = {
-    Name = "${var.environment_vars}_public_subnet_2"
+    Name = "${var.environment_code}_public_subnet_2"
   }
 }
 
@@ -32,7 +32,7 @@ resource "aws_subnet" "private_subnet_1" {
   cidr_block = "10.0.128.0/18"
 
   tags = {
-    Name = "${var.environment_vars}_private_subnet_1"
+    Name = "${var.environment_code}_private_subnet_1"
   }
 }
 
@@ -41,7 +41,7 @@ resource "aws_subnet" "private_subnet_2" {
   cidr_block = "10.0.192.0/18"
 
   tags = {
-    Name = "${var.environment_vars}_private_subnet_2"
+    Name = "${var.environment_code}_private_subnet_2"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_internet_gateway" "main_internetgateway" {
   vpc_id = aws_vpc.main_vpc.id
 
   tags = {
-    Name = "${var.environment_vars}_main_internetgateway"
+    Name = "${var.environment_code}_main_internetgateway"
   }
 }
 
@@ -58,7 +58,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_1" {
   subnet_id     = aws_subnet.public_subnet_1.id
 
   tags = {
-    Name = "${var.environment_vars}_aws_nat_gateway_1"
+    Name = "${var.environment_code}_aws_nat_gateway_1"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -71,7 +71,7 @@ resource "aws_nat_gateway" "aws_nat_gateway_2" {
   subnet_id     = aws_subnet.public_subnet_2.id
 
   tags = {
-    Name = "${var.environment_vars}_aws_nat_gateway_2"
+    Name = "${var.environment_code}_aws_nat_gateway_2"
   }
 
   # To ensure proper ordering, it is recommended to add an explicit dependency
@@ -87,7 +87,7 @@ resource "aws_route_table" "public_route_table" { # Creating RT for Public Subne
   }
 
   tags = {
-    Name = "${var.environment_vars}_public_route_table"
+    Name = "${var.environment_code}_public_route_table"
   }
 }
 
@@ -99,7 +99,7 @@ resource "aws_route_table" "private_route_table_1" { # Creating RT for Private S
   }
 
   tags = {
-    Name = "${var.environment_vars}_private_route_table_1"
+    Name = "${var.environment_code}_private_route_table_1"
   }
 }
 
@@ -111,7 +111,7 @@ resource "aws_route_table" "private_route_table_2" { # Creating RT for Private S
   }
 
   tags = {
-    Name = "${var.environment_vars}_private_route_table_2"
+    Name = "${var.environment_code}_private_route_table_2"
   }
 }
 
@@ -139,7 +139,7 @@ resource "aws_eip" "aws_eip_1" {
   vpc = true
 
   tags = {
-    Name = "${var.environment_vars}_aws_eip_1"
+    Name = "${var.environment_code}_aws_eip_1"
   }
 }
 
@@ -147,6 +147,6 @@ resource "aws_eip" "aws_eip_2" {
   vpc = true
 
   tags = {
-    Name = "${var.environment_vars}_aws_eip_2"
+    Name = "${var.environment_code}_aws_eip_2"
   }
 }

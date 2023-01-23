@@ -1,3 +1,3 @@
-variable "environment_vars" {
+variable "environment_code" {
   type = string
 }

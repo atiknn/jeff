@@ -1,1 +1,1 @@
-environment_vars = "dev"
+environment_code = "dev"
