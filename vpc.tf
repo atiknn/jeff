@@ -15,7 +15,7 @@ resource "aws_vpc" "main_vpc" {
 }
 
 resource "aws_subnet" "public_subnet" {
-  count = 2
+  count = length(local.public_subnet_cidr)
 
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = local.public_subnet_cidr[count.index]
@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnet" {
 }
 
 resource "aws_subnet" "private_subnet" {
-  count = 2
+  count = length(local.private_subnet_cidr)
 
   vpc_id     = aws_vpc.main_vpc.id
   cidr_block = local.private_subnet_cidr[count.index]
@@ -45,7 +45,7 @@ resource "aws_internet_gateway" "main_internetgateway" {
 }
 
 resource "aws_nat_gateway" "aws_nat_gateway" {
-  count = 2
+  count = length(local.public_subnet_cidr)
 
   allocation_id = aws_eip.aws_eip[count.index].id
   subnet_id     = aws_subnet.public_subnet[count.index].id
@@ -84,14 +84,14 @@ resource "aws_route_table" "private_route_table" { # Creating RT for Private Sub
 }
 
 resource "aws_route_table_association" "public_subnet_to_public_route_table" {
-  count = 2
+  count = length(local.public_subnet_cidr)
 
   subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.public_route_table.id
 }
 
 resource "aws_route_table_association" "private_subnet_to_public_route_table" {
-  count = 2
+  count = length(local.private_subnet_cidr)
 
   subnet_id      = aws_subnet.private_subnet[count.index].id
   route_table_id = aws_route_table.private_route_table[count.index].id
