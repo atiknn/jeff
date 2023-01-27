@@ -70,7 +70,7 @@ resource "aws_route_table" "public_route_table" { # Creating RT for Public Subne
 }
 
 resource "aws_route_table" "private_route_table" { # Creating RT for Private Subnet
-  count = 2
+  count = length(local.private_subnet_cidr)
 
   vpc_id = aws_vpc.main_vpc.id
   route {
@@ -98,7 +98,7 @@ resource "aws_route_table_association" "private_subnet_to_public_route_table" {
 }
 
 resource "aws_eip" "aws_eip" {
-  count = 2
+  count = length(local.public_subnet_cidr)
   vpc   = true
 
   tags = {
