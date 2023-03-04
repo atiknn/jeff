@@ -1,9 +1,38 @@
+data "aws_ami" "ec2_amazon" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "image-id"
+    values = ["ami-006dcf34c09e50022"]
+  }
+
+  /*filter {
+    name   = "name"
+    values = ["Amazon Linux 2 AMI*"]
+  }*/
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+}
 resource "aws_instance" "ec2" {
-  ami                         = "ami-005e54dee72cc1d00"
+  ami                         = data.aws_ami.ec2_amazon.id
   instance_type               = "t2.micro"
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.allow_tls.id]
-  subnet_id                   = aws_subnet.public_subnet[0]
+  subnet_id                   = aws_subnet.public_subnet[0].id
 
   tags = {
     Name = "${var.environment_code}_main_ec2_instance"
