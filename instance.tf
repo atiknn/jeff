@@ -4,7 +4,7 @@ data "aws_ami" "ec2_amazon" {
 
   filter {
     name   = "image-id"
-    values = ["ami-006dcf34c09e50022"]
+    values = ["ami-*"]
   }
 
   /*filter {
