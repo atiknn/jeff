@@ -7,10 +7,10 @@ data "aws_ami" "ec2_amazon" {
     values = ["ami-*"]
   }
 
-  /*filter {
+  filter {
     name   = "name"
-    values = ["Amazon Linux 2 AMI*"]
-  }*/
+    values = ["al*-ami*"]
+  }
 
   filter {
     name   = "root-device-type"
