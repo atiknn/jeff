@@ -1,15 +1,11 @@
 data "aws_ami" "ec2_amazon" {
   most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "image-id"
-    values = ["ami-*"]
-  }
+  owners      = ["137112412989"]
+  
 
   filter {
     name   = "name"
-    values = ["al*-ami*"]
+    values = ["amzn2-ami-kernel-*"]
   }
 
   filter {
