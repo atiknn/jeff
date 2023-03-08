@@ -1,7 +1,6 @@
 data "aws_ami" "ec2_amazon" {
   most_recent = true
   owners      = ["137112412989"]
-  
 
   filter {
     name   = "name"
@@ -30,6 +29,8 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids      = [aws_security_group.allow_tls.id]
   subnet_id                   = aws_subnet.public_subnet[0].id
 
+  user_data = file("init.sh")
+
   tags = {
     Name = "${var.environment_code}_main_ec2_instance"
   }
@@ -45,7 +46,15 @@ resource "aws_security_group" "allow_tls" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [aws_vpc.main_vpc.cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  ingress {
+    description = "TLS from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
