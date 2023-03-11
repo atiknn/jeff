@@ -9,11 +9,11 @@ terraform {
       version = "~> 4.16"
     }
   }
-  
+
   backend "s3" {
-    bucket = "terraformstatebucket"
-    key = "terraform.tfstate"
-    region = "us-east-1"
+    bucket         = "terraformstatebucket"
+    key            = "terraform.tfstate"
+    region         = "us-east-1"
     dynamodb_table = "terraformstate"
   }
 
