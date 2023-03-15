@@ -39,7 +39,7 @@ resource "aws_instance" "ec2" {
 resource "aws_security_group" "allow_tls" {
   name        = "allow_tls"
   description = "Allow TLS inbound traffic"
-  vpc_id      = aws_vpc.main_vpc.id
+  vpc_id      = data.terraform_remote_state.level1.outputs.vpc_id
 
   ingress {
     description = "TLS from VPC"
