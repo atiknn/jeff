@@ -1,1 +1,0 @@
-environment_code = "dev"
