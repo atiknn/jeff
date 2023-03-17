@@ -105,7 +105,3 @@ resource "aws_eip" "aws_eip" {
     Name = "${var.environment_code}_aws_eip_${count.index}"
   }
 }
-
-
-
-
