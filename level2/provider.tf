@@ -11,10 +11,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraformstatebucket"
-    key            = "terraform.tfstate"
+    bucket         = "terraformstatebucketl1"
+    key            = "level2.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraformstate"
+    dynamodb_table = "terraformstatedynamo"
   }
 
   required_version = ">= 1.2.0"
