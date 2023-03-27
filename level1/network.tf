@@ -2,6 +2,7 @@ locals {
   vpc_cidr            = "10.0.0.0/16"
   public_subnet_cidr  = ["10.0.0.0/18", "10.0.64.0/18"]
   private_subnet_cidr = ["10.0.128.0/18", "10.0.192.0/18"]
+  availability_zone   = ["us-east-1a", "us-east-1b"]
 }
 # Configure the AWS Provider 
 
@@ -17,8 +18,9 @@ resource "aws_vpc" "main_vpc" {
 resource "aws_subnet" "public_subnet" {
   count = length(local.public_subnet_cidr)
 
-  vpc_id     = aws_vpc.main_vpc.id
-  cidr_block = local.public_subnet_cidr[count.index]
+  vpc_id            = aws_vpc.main_vpc.id
+  cidr_block        = local.public_subnet_cidr[count.index]
+  availability_zone = local.availability_zone[count.index]
 
   tags = {
     Name = "${var.environment_code}_public_subnet_${count.index}"

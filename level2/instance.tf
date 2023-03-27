@@ -27,7 +27,7 @@ resource "aws_instance" "ec2" {
   instance_type               = "t2.micro"
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.allow_tls.id]
-  subnet_id                   = data.terraform_remote_state.level1.outputs.public_subnet_id[1]
+  subnet_id                   = data.terraform_remote_state.level1.outputs.private_subnet_id[1]
 
   user_data = file("user-data.sh")
 
@@ -47,6 +47,7 @@ resource "aws_security_group" "allow_tls" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    #security_groups = [aws_security_group.sg_elb.id]
   }
 
   ingress {
@@ -55,6 +56,7 @@ resource "aws_security_group" "allow_tls" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    #cidr_blocks = [data.terraform_remote_state.level1.outputs.vpc_cidr_block]
   }
 
   egress {
