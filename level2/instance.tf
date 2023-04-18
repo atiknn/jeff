@@ -87,10 +87,10 @@ resource "aws_security_group" "aws_security_group_instance" {
   }
 
   egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = [aws_security_group.aws_security_group_lb.id]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   vpc_id = data.terraform_remote_state.level1.outputs.vpc_id
