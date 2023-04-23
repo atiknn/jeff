@@ -41,12 +41,7 @@ resource "aws_lb_target_group" "main" {
   protocol = "HTTP"
   vpc_id   = data.terraform_remote_state.level1.outputs.vpc_id
 }
-/*
-resource "aws_lb_target_group_attachment" "main" {
-  target_group_arn = aws_lb_target_group.main.arn
-  target_id        = aws_instance.ec2.id
-  port             = 80
-}*/
+
 
 resource "aws_autoscaling_attachment" "aws_autoscaling_attachment" {
   autoscaling_group_name = aws_autoscaling_group.aws_autoscaling_group.id
