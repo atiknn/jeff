@@ -5,6 +5,7 @@ resource "aws_launch_configuration" "asg_launch_configuration" {
   user_data       = file("user-data.sh")
   security_groups = [aws_security_group.aws_security_group_instance.id]
   key_name        = "bastion-1"
+  iam_instance_profile = aws_iam_instance_profile.iam_s3_profile.name
 
   lifecycle {
     create_before_destroy = true
