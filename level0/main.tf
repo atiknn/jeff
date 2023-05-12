@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "s3_bucket_tf_state" {
-  bucket = "terraformstatebucketl1"
+  bucket = "terraformstatebucketl2"
 }
 
 resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
