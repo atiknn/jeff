@@ -12,7 +12,7 @@ resource "aws_iam_role" "iam_role_autoscaling" {
             "Effect": "Allow",
             "Principal": {
                 "Service": [
-                    "autoscaling.amazonaws.com"
+                    "ec2.amazonaws.com"
                 ]
             }
         }
