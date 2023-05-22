@@ -11,7 +11,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "terraformstatebucketl1"
+    bucket         = "terraformstatebucketl2"
     key            = "level2.tfstate"
     region         = "us-east-1"
     dynamodb_table = "terraformstatedynamo"
