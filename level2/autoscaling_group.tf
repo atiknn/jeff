@@ -3,8 +3,7 @@ resource "aws_launch_configuration" "asg_launch_configuration" {
   image_id        = data.aws_ami.ec2_amazon.id
   instance_type   = "t2.micro"
   user_data       = file("user-data.sh")
-  security_groups = [aws_security_group.aws_security_group_instance.id]
-  key_name        = "bastion-1"
+  security_groups = [aws_security_group.aws_security_group_instance.id]  
   iam_instance_profile  = aws_iam_instance_profile.aws_iam_instance_profile.name
 
   lifecycle {
